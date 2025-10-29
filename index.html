@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <script type="importmap">
+      {
+        "imports": {
+          "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
+          "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+          "@google/genai": "https://aistudiocdn.com/@google/genai@^1.27.0",
+          "react/": "https://aistudiocdn.com/react@^19.2.0/",
+          "react": "https://aistudiocdn.com/react@^19.2.0"
+        }
+      }
+    </script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GalaxyEd - المنصة التعليمية الذكية</title>
+
+    <link rel="preload" href="https://aistudiocdn.com/react@^19.2.0" as="script" crossOrigin="anonymous">
+    <link rel="preload" href="https://aistudiocdn.com/react-dom@^19.2.0" as="script" crossOrigin="anonymous">
+    <link rel="preload" href="https://aistudiocdn.com/@google/genai@^1.27.0" as="script" crossOrigin="anonymous">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.10/dist/purify.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap"></noscript>
+    <style>
+      :root {
+        /* Brand Colors */
+        --primary-color: #14b8a6; /* teal-500 */
+        --primary-color-hover: #0d9488; /* teal-600 */
+        --primary-color-light: #2dd4bf; /* teal-400 */
+        --primary-color-dark: #115e59; /* teal-800 */
+        --primary-color-translucent: rgba(20, 184, 166,  0.15);
+        --primary-color-deep-translucent: rgba(20, 184, 166, 0.25);
+        --gradient-start: #2dd4bf; /* teal-400 */
+        --gradient-end: #06b6d4; /* cyan-500 */
+        --gradient-start-hover: #14b8a6; /* teal-500 */
+        --gradient-end-hover: #0891b2; /* cyan-600 */
+
+
+        /* Light Theme */
+        --background-light: #f8fafc; /* slate-50 */
+        --background-elevated-light: #ffffff;
+        --text-light: #0f172a; /* slate-900 */
+        --text-muted-light: #64748b; /* slate-500 */
+        --border-light: rgba(226, 232, 240, 0.7); /* slate-200 */
+        --border-muted-light: #cbd5e1; /* slate-300 */
+        --card-background-light: rgba(255, 255, 255, 0.6);
+        --button-muted-background-light: rgba(203, 213, 225, 0.5); /* slate-300 */
+        --button-muted-hover-background-light: rgba(148, 163, 184, 0.5); /* slate-400 */
+        --button-disabled-background-light: #94a3b8; /* slate-400 */
+        --sidebar-background-light: rgba(241, 245, 249, 0.8); /* slate-100 translucent */
+        --sidebar-hover-background-light: rgba(226, 232, 240, 0.9); /* slate-200 translucent */
+
+        /* Dark Theme */
+        --background-dark: #020617; /* slate-950 */
+        --background-elevated-dark: #0f172a; /* slate-900 */
+        --text-dark: #e2e8f0; /* slate-200 */
+        --text-muted-dark: #94a3b8; /* slate-400 */
+        --border-dark: rgba(51, 65, 85, 0.6); /* slate-700 */
+        --border-muted-dark: #475569; /* slate-600 */
+        --card-background-dark: rgba(15, 23, 42, 0.4); /* slate-900 */
+        --button-muted-background-dark: rgba(51, 65, 85, 0.5); /* slate-700 */
+        --button-muted-hover-background-dark: rgba(71, 85, 105, 0.5); /* slate-600 */
+        --button-disabled-background-dark: #475569; /* slate-600 */
+        --sidebar-background-dark: rgba(30, 41, 59, 0.8); /* slate-800 translucent */
+        
+        /* Utility Colors */
+        --success-color: #22c55e; /* green-500 */
+        --error-color: #ef4444; /* red-500 */
+        --error-color-light: #f87171; /* red-400 */
+        --error-color-dark: #b91c1c; /* red-700 */
+        --error-background-translucent: rgba(239, 68, 68, 0.2);
+        --error-border-translucent: rgba(239, 68, 68, 0.3);
+      }
+
+      html.light {
+        --background-color: var(--background-light);
+        --background-elevated-color: var(--background-elevated-light);
+        --text-color: var(--text-light);
+        --text-muted-color: var(--text-muted-light);
+        --card-background: var(--card-background-light);
+        --border-color: var(--border-light);
+        --border-muted-color: var(--border-muted-light);
+        --input-background: var(--background-elevated-light);
+        --button-muted-background: var(--button-muted-background-light);
+        --button-muted-hover-background: var(--button-muted-hover-background-light);
+        --button-disabled-background: var(--button-disabled-background-light);
+        --sidebar-background: var(--sidebar-background-light);
+        --sidebar-text-color: var(--text-light);
+        --sidebar-text-muted-color: var(--text-muted-light);
+        --sidebar-hover-background: var(--sidebar-hover-background-light);
+      }
+      html.dark {
+        --background-color: var(--background-dark);
+        --background-elevated-color: var(--background-elevated-dark);
+        --text-color: var(--text-dark);
+        --text-muted-color: var(--text-muted-dark);
+        --card-background: var(--card-background-dark);
+        --border-color: var(--border-dark);
+        --border-muted-color: var(--border-muted-dark);
+        --input-background: var(--background-elevated-dark);
+        --button-muted-background: var(--button-muted-background-dark);
+        --button-muted-hover-background: var(--button-muted-hover-background-dark);
+        --button-disabled-background: var(--button-disabled-background-dark);
+        --sidebar-background: var(--sidebar-background-dark);
+        --sidebar-text-color: var(--text-dark);
+        --sidebar-text-muted-color: var(--text-muted-dark);
+        --sidebar-hover-background: var(--button-muted-hover-background-dark);
+      }
+      body {
+        font-family: 'Cairo', sans-serif;
+        background-color: var(--background-color);
+        color: var(--text-color);
+        transition: background-color 0.3s, color 0.3s;
+      }
+      
+      @keyframes twinkle {
+        0% { background-position: 0 0; }
+        100% { background-position: -10000px 5000px; }
+      }
+      html.dark body {
+        background-color: #000;
+        background-image: 
+          radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+          radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+          radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+          radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+        background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+        background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+        animation: twinkle 200s linear infinite;
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+      .animate-fade-in-up {
+        animation: fadeInUp 0.5s ease-out forwards;
+        opacity: 0;
+      }
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+      }
+      .animate-float-subtle {
+        animation: floatSubtle 6s ease-in-out infinite;
+      }
+      @keyframes floatSubtle {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+      }
+      .chat-window-drag-handle {
+        cursor: move;
+      }
+      .chat-window-drag-handle:active {
+        cursor: grabbing;
+      }
+      @keyframes pulse-slow {
+        50% {
+          box-shadow: 0 0 25px theme('colors.amber.500 / 0.6');
+        }
+      }
+      .animate-pulse-slow {
+          animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      /* For prose styles in chat */
+      .prose {
+        color: var(--text-color);
+      }
+      .prose strong {
+        color: var(--text-color);
+      }
+      /* Custom scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.1);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border-muted-color);
+        border-radius: 10px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted-color);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
