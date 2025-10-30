@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense, useCallback } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { translations } from './lib/translations';
@@ -18,8 +18,9 @@ const LibraryPage = lazy(() => import('./pages/LibraryPage'));
 const TasksPage = lazy(() => import('./pages/TasksPage'));
 const LandingPage = lazy(() => import('./pages/LandingPage'));
 const AIAgenticPage = lazy(() => import('./pages/AIAgenticPage'));
+const UserManualPage = lazy(() => import('./pages/UserManualPage'));
 
-export type Page = 'cvAnalysis' | 'profile' | 'developmentPlan' | 'tasks' | 'community' | 'courses' | 'library' | 'offers' | 'aiAgentic';
+export type Page = 'cvAnalysis' | 'profile' | 'developmentPlan' | 'tasks' | 'community' | 'courses' | 'library' | 'offers' | 'aiAgentic' | 'userManual';
 export type Theme = 'light' | 'dark';
 export type Language = 'ar' | 'en';
 type AppView = 'landing' | 'main';
@@ -30,6 +31,7 @@ const App: React.FC = () => {
   const [page, setPage] = useState<Page>('profile');
   const [activeAiTool, setActiveAiTool] = useState<AITool>('content');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSidebarPinned, setIsSidebarPinned] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [appView, setAppView] = useState<AppView>('landing');
   const chatAssistantRef = useRef<ChatAssistantHandle>(null);
@@ -74,6 +76,14 @@ const App: React.FC = () => {
     localStorage.setItem('onboardingComplete', 'true');
     setShowOnboarding(false);
   };
+
+  const handleToggleSidebar = useCallback(() => {
+    if (window.innerWidth < 768) { // Corresponds to Tailwind's 'md' breakpoint
+        setIsMobileMenuOpen(prev => !prev);
+    } else {
+        setIsSidebarPinned(prev => !prev);
+    }
+  }, []);
   
   const handleMedooToggle = () => {
     chatAssistantRef.current?.toggleOpenState();
@@ -103,6 +113,8 @@ const App: React.FC = () => {
         return <LibraryPage t={t} />;
       case 'aiAgentic':
         return <AIAgenticPage t={t} language={language} activeTool={activeAiTool} />;
+      case 'userManual':
+        return <UserManualPage t={t} language={language} />;
       default:
         return <ProfilePage t={t} language={language} onLogout={() => setAppView('landing')} setPage={setPage} />;
     }
@@ -129,16 +141,18 @@ const App: React.FC = () => {
                         setActiveAiTool={setActiveAiTool}
                         t={t}
                         onLogoClick={() => setAppView('landing')}
+                        isPinned={isSidebarPinned}
                         isOpen={isMobileMenuOpen}
                         onClose={() => setIsMobileMenuOpen(false)}
                     />
-                    <div className="md:pr-[90px] lg:pr-[250px] transition-all duration-300 flex flex-col min-h-screen">
+                    <div className={`md:pr-[${isSidebarPinned ? '250px' : '90px'}] transition-all duration-300 flex flex-col min-h-screen`}>
                         <Header 
                             theme={theme}
                             setTheme={setTheme}
                             language={language}
                             setLanguage={setLanguage}
-                            onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            isSidebarPinned={isSidebarPinned}
+                            onToggleSidebar={handleToggleSidebar}
                             onMedooToggle={handleMedooToggle}
                             t={t}
                         />

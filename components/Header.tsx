@@ -12,23 +12,24 @@ interface HeaderProps {
     setTheme: (theme: Theme) => void;
     language: Language;
     setLanguage: (lang: Language) => void;
-    onToggleMobileMenu: () => void;
+    isSidebarPinned: boolean;
+    onToggleSidebar: () => void;
     onMedooToggle: () => void;
     t: (key: keyof typeof translations) => string;
 }
 
-export const Header: React.FC<HeaderProps> = ({ theme, setTheme, language, setLanguage, onToggleMobileMenu, onMedooToggle, t }) => {
+export const Header: React.FC<HeaderProps> = ({ theme, setTheme, language, setLanguage, isSidebarPinned, onToggleSidebar, onMedooToggle, t }) => {
     const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
     const toggleLanguage = () => setLanguage(language === 'ar' ? 'en' : 'ar');
 
     return (
-        <header className="fixed top-0 left-0 md:left-auto right-0 md:pr-[90px] h-16 z-40 w-full transition-all duration-300">
+        <header className={`fixed top-0 left-0 md:left-auto right-0 md:pr-[${isSidebarPinned ? '250px' : '90px'}] h-16 z-40 w-full transition-all duration-300`}>
             <div className="relative mx-4 md:mx-8 mt-4 h-full">
                 <div className="flex items-center justify-between p-2 sm:p-4 bg-[var(--card-background)] backdrop-blur-xl rounded-2xl shadow-lg border border-[var(--border-color)] h-full">
                     <div className="flex items-center gap-2">
                         <button 
-                            onClick={onToggleMobileMenu}
-                            className="md:hidden p-2.5 rounded-full bg-[var(--button-muted-background)] text-[var(--text-color)] hover:bg-[var(--button-muted-hover-background)] transition-colors"
+                            onClick={onToggleSidebar}
+                            className="p-2.5 rounded-full bg-[var(--button-muted-background)] text-[var(--text-color)] hover:bg-[var(--button-muted-hover-background)] transition-colors"
                             aria-label="Toggle Menu"
                         >
                             <MenuIcon className="w-5 h-5" />

@@ -19,6 +19,7 @@ import { VideoCameraIcon } from './icons/VideoCameraIcon';
 import { ChartBarIcon } from './icons/ChartBarIcon';
 import { SearchIcon } from './icons/SearchIcon';
 import { DocumentReportIcon } from './icons/DocumentReportIcon';
+import { QuestionMarkCircleIcon } from './icons/QuestionMarkCircleIcon';
 
 
 interface SidebarProps {
@@ -28,6 +29,7 @@ interface SidebarProps {
     setActiveAiTool: (tool: AITool) => void;
     t: (key: keyof typeof translations) => string;
     onLogoClick: () => void;
+    isPinned: boolean;
     isOpen: boolean;
     onClose: () => void;
 }
@@ -51,9 +53,10 @@ const menuItems: { id: Page; icon: React.FC<React.SVGProps<SVGSVGElement>>; labe
     { id: 'community', icon: UsersIcon, labelKey: 'community' },
     { id: 'courses', icon: AcademicCapIcon, labelKey: 'courses' },
     { id: 'offers', icon: TagIcon, labelKey: 'offers' },
+    { id: 'userManual', icon: QuestionMarkCircleIcon, labelKey: 'userManual' },
 ];
 
-export const Sidebar: React.FC<SidebarProps> = ({ page, setPage, activeAiTool, setActiveAiTool, t, onLogoClick, isOpen, onClose }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ page, setPage, activeAiTool, setActiveAiTool, t, onLogoClick, isPinned, isOpen, onClose }) => {
     
     const [isAiSubMenuOpen, setIsAiSubMenuOpen] = useState(page === 'aiAgentic');
 
@@ -82,11 +85,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ page, setPage, activeAiTool, s
     const isAiPageActive = page === 'aiAgentic';
 
     const NavContent = () => (
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full overflow-y-auto overflow-x-hidden">
             <div className="flex items-center justify-between h-20 px-6 shrink-0">
                 <button onClick={onLogoClick} className="flex items-center gap-3" aria-label="Go to homepage">
                      <AnkhIcon className="w-10 h-10 transition-transform hover:rotate-12" />
-                     <span className="text-xl font-bold text-[var(--sidebar-text-color)] transition-opacity duration-300 opacity-100 group-data-[state=collapsed]:opacity-0">{t('aiTools')}</span>
+                     <span className="text-xl font-bold text-[var(--sidebar-text-color)] transition-opacity duration-200 whitespace-nowrap md:opacity-0 group-hover:md:opacity-100 group-data-[pinned=true]:md:opacity-100">{t('aiTools')}</span>
                 </button>
                 <button onClick={onClose} className="md:hidden p-2 rounded-full hover:bg-white/10">
                     <XIcon className="w-6 h-6 text-[var(--sidebar-text-color)]" />
@@ -108,17 +111,17 @@ export const Sidebar: React.FC<SidebarProps> = ({ page, setPage, activeAiTool, s
                                 }`}
                             >
                                 <item.icon className="w-6 h-6 shrink-0" />
-                                <span className="font-semibold transition-opacity duration-300 opacity-100 group-data-[state=collapsed]:opacity-0">{t(item.labelKey)}</span>
+                                <span className="font-semibold transition-opacity duration-200 whitespace-nowrap md:opacity-0 group-hover:md:opacity-100 group-data-[pinned=true]:md:opacity-100">{t(item.labelKey)}</span>
                             </button>
                              {isSubMenuVisible && (
-                                <div className="pl-8 rtl:pr-8 space-y-1 mt-1 animate-fade-in group-data-[state=collapsed]:hidden">
+                                <div className="pl-8 rtl:pr-8 space-y-1 mt-1 animate-fade-in transition-opacity duration-200 md:opacity-0 group-hover:md:opacity-100 group-data-[pinned=true]:md:opacity-100">
                                     {item.subMenu!.map(subItem => (
                                         <button key={subItem.id} onClick={() => handleSubMenuClick(subItem.id)} 
                                             className={`w-full flex items-center gap-3 p-2 rounded-md text-sm text-left rtl:text-right transition-colors duration-200 ${
                                                 activeAiTool === subItem.id && isAiPageActive ? 'text-[var(--primary-color-light)]' : 'text-slate-400 hover:text-white'
                                             }`}>
                                             <subItem.icon className="w-5 h-5 shrink-0" />
-                                            <span>{t(subItem.labelKey)}</span>
+                                            <span className="whitespace-nowrap">{t(subItem.labelKey)}</span>
                                         </button>
                                     ))}
                                 </div>
@@ -130,9 +133,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ page, setPage, activeAiTool, s
         </div>
     );
     
-    // Determine collapsed state for data attribute
-    const isCollapsed = !isAiPageActive && !isAiSubMenuOpen;
-
     return (
         <>
             {/* Overlay for mobile */}
@@ -141,13 +141,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ page, setPage, activeAiTool, s
                 onClick={onClose}
             />
             <aside 
-                className={`group fixed top-0 right-0 h-full bg-[var(--sidebar-background)] backdrop-blur-xl border-l border-[var(--border-color)] transition-all duration-300 ease-in-out z-50
-                w-[250px]
-                ${isOpen ? 'translate-x-0' : 'translate-x-full'}
-                md:translate-x-0
-                lg:w-[250px]
-                `}
-                data-state={isCollapsed && !isOpen ? 'collapsed' : 'expanded'}
+               className={`group fixed top-0 right-0 h-full bg-[var(--sidebar-background)] backdrop-blur-xl border-l border-[var(--border-color)] z-50 transition-transform md:transition-[width] duration-300 ease-in-out
+                    w-[250px] ${isOpen ? 'translate-x-0' : 'translate-x-full'}
+                    md:translate-x-0 ${isPinned ? 'md:w-[250px]' : 'md:w-[90px] md:hover:w-[250px]'}
+               `}
+               data-pinned={isPinned}
             >
                 <NavContent />
             </aside>
