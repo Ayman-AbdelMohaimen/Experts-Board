@@ -118,87 +118,8 @@
         color: var(--text-color);
         transition: background-color 0.3s, color 0.3s;
       }
-      
-      @keyframes twinkle {
-        0% { background-position: 0 0; }
-        100% { background-position: -10000px 5000px; }
-      }
-      html.dark body {
-        background-color: #000;
-        background-image: 
-          radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-          radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-          radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-          radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
-        background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
-        background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
-        animation: twinkle 200s linear infinite;
-      }
-      .animate-fade-in {
-        animation: fadeIn 0.5s ease-out forwards;
-      }
-      .animate-fade-in-up {
-        animation: fadeInUp 0.5s ease-out forwards;
-        opacity: 0;
-      }
-      @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-      }
-      @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-      }
-      .animate-float-subtle {
-        animation: floatSubtle 6s ease-in-out infinite;
-      }
-      @keyframes floatSubtle {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-        100% { transform: translateY(0px); }
-      }
-      .chat-window-drag-handle {
-        cursor: move;
-      }
-      .chat-window-drag-handle:active {
-        cursor: grabbing;
-      }
-      @keyframes pulse-slow {
-        50% {
-          box-shadow: 0 0 25px theme('colors.amber.500 / 0.6');
-        }
-      }
-      .animate-pulse-slow {
-          animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-      }
-      /* For prose styles in chat */
-      .prose {
-        color: var(--text-color);
-      }
-      .prose strong {
-        color: var(--text-color);
-      }
-      /* Custom scrollbar */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: rgba(0,0,0,0.1);
-        border-radius: 10px;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: var(--border-muted-color);
-        border-radius: 10px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: var(--text-muted-color);
-      }
+      /* The problematic animated background has been removed to fix the application. */
+      /* A smaller, web-optimized image can be used here later. */
     </style>
   </head>
   <body>
